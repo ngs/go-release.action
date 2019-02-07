@@ -12,7 +12,13 @@ RELEASE_NAME=$(echo $EVENT_DATA | jq -r .release.tag_name)
 PROJECT_NAME=$(basename $GITHUB_REPOSITORY)
 NAME="${PROJECT_NAME}_${RELEASE_NAME}_${GOOS}_${GOARCH}"
 
-tar cvfz tmp.tgz $PROJECT_NAME
+EXT=''
+
+if [ $GOOS == 'windows' ]; then
+  EXT='.exe'
+fi
+
+tar cvfz tmp.tgz "${PROJECT_NAME}${EXT}"
 CHECKSUM=$(md5sum tmp.tgz | cut -d ' ' -f 1)
 
 curl \
