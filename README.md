@@ -1,4 +1,4 @@
-# go-release.action
+# Go Release Binary GitHub Action
 
 Automate publishing Go build artifacts for GitHub releases through GitHub Actions
 
