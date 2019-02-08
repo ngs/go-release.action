@@ -15,7 +15,7 @@ workflow "Build" {
 }
 
 action "release darwin/amd64" {
-  uses = "ngs/go-release.action@v1.0.1"
+  uses = "ngs/go-release.action@v1.0.0"
   env = {
     GOOS = "darwin"
     GOARCH = "amd64"
@@ -24,7 +24,7 @@ action "release darwin/amd64" {
 }
 
 action "release windows/amd64" {
-  uses = "ngs/go-release.action@v1.0.1"
+  uses = "ngs/go-release.action@v1.0.0"
   env = {
     GOOS = "windows"
     GOARCH = "amd64"
@@ -33,7 +33,7 @@ action "release windows/amd64" {
 }
 
 action "release linux/amd64" {
-  uses = "ngs/go-release.action@v1.0.1"
+  uses = "ngs/go-release.action@v1.0.0"
   env = {
     GOOS = "linux"
     GOARCH = "amd64"
