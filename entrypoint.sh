@@ -18,15 +18,14 @@ if [ $GOOS == 'windows' ]; then
   EXT='.exe'
 fi
 
-tar cvfz tmp.tgz "${PROJECT_NAME}${EXT}"
-CHECKSUM=$(md5sum tmp.tgz | cut -d ' ' -f 1)
+CHECKSUM=$(md5sum "${PROJECT_NAME}${EXT}" | cut -d ' ' -f 1)
 
 curl \
   -X POST \
-  --data-binary @tmp.tgz \
+  --data-binary @"${PROJECT_NAME}${EXT}" \
   -H 'Content-Type: application/gzip' \
   -H "Authorization: Bearer ${GITHUB_TOKEN}" \
-  "${UPLOAD_URL}?name=${NAME}.tar.gz"
+  "${UPLOAD_URL}?name=${NAME}"
 
 curl \
   -X POST \
