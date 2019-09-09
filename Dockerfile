@@ -13,7 +13,7 @@ LABEL "homepage"="http://ngs.io/t/actions/"
 
 LABEL "maintainer"="Atsushi Nagase <a@ngs.io> (https://ngs.io)"
 
-RUN apk add --no-cache curl jq git
+RUN apk add --no-cache curl jq git build-base
 
 ADD entrypoint.sh /entrypoint.sh
 ADD build.sh /build.sh
