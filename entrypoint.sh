@@ -2,7 +2,14 @@
 
 set -eux
 
-/build.sh
+if [ -z "${CMD_PATH+x}" ]; then
+  echo "::warning file=entrypoint.sh,line=6,col=1::CMD_PATH not set"
+  export CMD_PATH=""
+fi
+
+FILE_LIST=`/build.sh`
+
+#echo "::warning file=/build.sh,line=1,col=5::${FILE_LIST}"
 
 EVENT_DATA=$(cat $GITHUB_EVENT_PATH)
 echo $EVENT_DATA | jq .
@@ -12,13 +19,15 @@ RELEASE_NAME=$(echo $EVENT_DATA | jq -r .release.tag_name)
 PROJECT_NAME=$(basename $GITHUB_REPOSITORY)
 NAME="${PROJECT_NAME}_${RELEASE_NAME}_${GOOS}_${GOARCH}"
 
-EXT=''
-
-if [ $GOOS == 'windows' ]; then
-  EXT='.exe'
+if [ -z "${EXTRA_FILES+x}" ]; then
+echo "::warning file=entrypoint.sh,line=22,col=1::EXTRA_FILES not set"
 fi
 
-tar cvfz tmp.tgz "${PROJECT_NAME}${EXT}"
+FILE_LIST="${FILE_LIST} ${EXTRA_FILES}"
+
+FILE_LIST=`echo "${FILE_LIST}" | awk '{$1=$1};1'`
+
+tar cvfz tmp.tgz ${FILE_LIST}
 CHECKSUM=$(md5sum tmp.tgz | cut -d ' ' -f 1)
 
 curl \
