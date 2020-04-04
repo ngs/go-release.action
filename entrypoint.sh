@@ -27,15 +27,23 @@ FILE_LIST="${FILE_LIST} ${EXTRA_FILES}"
 
 FILE_LIST=`echo "${FILE_LIST}" | awk '{$1=$1};1'`
 
-tar cvfz tmp.tgz ${FILE_LIST}
-CHECKSUM=$(md5sum tmp.tgz | cut -d ' ' -f 1)
+
+if [ $GOOS == 'windows' ]; then
+ARCHIVE=tmp.zip
+zip -9r $ARCHIVE ${FILE_LIST}
+else
+ARCHIVE=tmp.tgz
+tar cvfz $ARCHIVE ${FILE_LIST}
+fi
+
+CHECKSUM=$(md5sum ${ARCHIVE} | cut -d ' ' -f 1)
 
 curl \
   -X POST \
-  --data-binary @tmp.tgz \
-  -H 'Content-Type: application/gzip' \
+  --data-binary @${ARCHIVE} \
+  -H 'Content-Type: application/octet-stream' \
   -H "Authorization: Bearer ${GITHUB_TOKEN}" \
-  "${UPLOAD_URL}?name=${NAME}.tar.gz"
+  "${UPLOAD_URL}?name=${NAME}.${ARCHIVE/tmp./}"
 
 curl \
   -X POST \
