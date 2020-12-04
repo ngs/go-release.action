@@ -1,6 +1,4 @@
-#!/bin/sh
-
-set -eux
+#!/bin/sh -eux
 
 if [ -z "${BUILD_FLAGS+x}" ]; then
   echo "::warning file=entrypoint.sh,line=6,col=1::BUILD_FLAGS not set"
