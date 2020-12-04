@@ -1,6 +1,4 @@
-#!/bin/sh
-
-set -eux
+#!/bin/sh -eux
 
 PROJECT_ROOT="/go/src/github.com/${GITHUB_REPOSITORY}"
 
