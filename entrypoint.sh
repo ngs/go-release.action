@@ -12,8 +12,6 @@ fi
 
 FILE_LIST=`/build.sh`
 
-#echo "::warning file=/build.sh,line=1,col=5::${FILE_LIST}"
-
 EVENT_DATA=$(cat $GITHUB_EVENT_PATH)
 echo $EVENT_DATA | jq .
 UPLOAD_URL=$(echo $EVENT_DATA | jq -r .release.upload_url)
