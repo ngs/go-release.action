@@ -23,4 +23,8 @@ else
   fi
 fi
 
+if [ ! -e $OUTPUT ]; then
+  echo "::warning file=build.sh,line=27,col=1::OUTPUT is not set properly"
+fi
+
 echo ${OUTPUT}
