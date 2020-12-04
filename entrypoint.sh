@@ -2,6 +2,11 @@
 
 set -eux
 
+if [ -z "${BUILD_FLAGS+x}" ]; then
+  echo "::warning file=entrypoint.sh,line=6,col=1::BUILD_FLAGS not set"
+  export BUILD_FLAGS=""
+fi
+
 if [ -z "${CMD_PATH+x}" ]; then
   echo "::warning file=entrypoint.sh,line=6,col=1::CMD_PATH not set"
   export CMD_PATH=""
