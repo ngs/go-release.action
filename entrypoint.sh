@@ -7,9 +7,16 @@ if [ -z "${CMD_PATH+x}" ]; then
   export CMD_PATH=""
 fi
 
-FILE_LIST=`/build.sh`
+RUN=`/build.sh`
+FILE_LIST="${RUN//[$'\t\r\n '}"
 
-#echo "::warning file=/build.sh,line=1,col=5::${FILE_LIST}"
+if [ -z "${FILE_LIST}" ]; then
+echo "::error file=entrypoint.sh,line=10,col=1::FILE_LIST is empty"
+exit 1
+else
+echo "::info file=/build.sh,line=10,col=1::${FILE_LIST}"
+fi
+
 
 EVENT_DATA=$(cat $GITHUB_EVENT_PATH)
 echo $EVENT_DATA | jq .
@@ -20,15 +27,20 @@ PROJECT_NAME=$(basename $GITHUB_REPOSITORY)
 NAME="${NAME:-${PROJECT_NAME}_${RELEASE_NAME}}_${GOOS}_${GOARCH}"
 
 if [ -z "${EXTRA_FILES+x}" ]; then
-echo "::warning file=entrypoint.sh,line=22,col=1::EXTRA_FILES not set"
+echo "::warning file=entrypoint.sh,line=27,col=1::EXTRA_FILES not set"
 fi
 
 FILE_LIST="${FILE_LIST} ${EXTRA_FILES}"
 
 FILE_LIST=`echo "${FILE_LIST}" | awk '{$1=$1};1'`
 
+if [ -z "${FILE_LIST}" ]; then
+echo "::error file=entrypoint.sh,line=33,col=1::FILE_LIST is empty"
+exit 1
+fi
 
-if [ $GOOS == 'windows' ]; then
+
+if [ "${GOOS}" == "windows" ]; then
 ARCHIVE=tmp.zip
 zip -9r $ARCHIVE ${FILE_LIST}
 else
