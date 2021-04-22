@@ -12,7 +12,7 @@ go get -v ./...
 
 EXT=''
 
-if [ $GOOS == 'windows' ]; then
+if [ "${GOOS}" == 'windows' ]; then
 EXT='.exe'
 fi
 
@@ -23,4 +23,4 @@ else
   OUTPUT="${PROJECT_NAME}${EXT}"
 fi
 
-echo ${OUTPUT}
+echo -n "${OUTPUT}"
