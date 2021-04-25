@@ -13,8 +13,12 @@ Extra environment variables:
     * Example: EXTRA_FILES: "README.md LICENSE"
 ```yaml
 # .github/workflows/release.yaml
-
-on: release
+defaults:
+  run:
+    shell: bash
+on: 
+  release:
+    types: [published]
 name: Build Release
 jobs:
   release-linux-386:
